@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores de Clientes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: white;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .back-button, .filter-button {
+            width: 32px;
+            height: 32px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .blue-section {
+            background: #4a90e2;
+            color: white;
+            text-align: center;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .content {
+            padding: 16px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 8px;
+            padding: 14px;
+            border: 1px solid #87ceeb;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        .stat-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .stat-description {
+            font-size: 10px;
+            color: #6b7280;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+
+        .analysis-section {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #87ceeb;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .select-box {
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #6b7280;
+            background: white;
+        }
+
+        .chart-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1f2937;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .chart-bar {
+            height: 50px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 14px;
+            margin-bottom: 8px;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .bar-green {
+            background: #10b981;
+        }
+
+        .bar-purple {
+            background: #a855f7;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .summary-item {
+            background: white;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #87ceeb;
+        }
+
+        .summary-label {
+            font-size: 9px;
+            color: #6b7280;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+
+        .summary-value {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .value-cyan { color: #06b6d4; }
+        .value-orange { color: #f97316; }
+        .value-blue { color: #3b82f6; }
+        .value-purple { color: #a855f7; }
+
+        .city-cards {
+            display: grid;
+            gap: 12px;
+        }
+
+        .city-card {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #87ceeb;
+        }
+
+        .city-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .city-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .city-state {
+            font-size: 11px;
+            color: #6b7280;
+            margin-left: 4px;
+        }
+
+        .add-button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .city-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .city-stat {
+            text-align: center;
+        }
+
+        .city-stat-label {
+            font-size: 9px;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .city-stat-value {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .city-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .retention-text {
+            font-size: 10px;
+            color: #6b7280;
+        }
+
+        .retention-value {
+            font-size: 12px;
+            font-weight: 700;
+            color: #a855f7;
+        }
+
+        .badge-excelente {
+            background: #10b981;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="back-button">←</button>
+        <div class="header-title">INDICADORES DE CLIENTES</div>
+        <button class="filter-button">🔔</button>
+    </div>
+
+    <div class="blue-section">Serviços/Evolução</div>
+
+    <div class="content">
+        <div class="section-title">Resumo de Ativações</div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-label">Total de Clientes Ativados</div>
+                    <div class="stat-icon">👥</div>
+                </div>
+                <div class="stat-value">2</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-label">Total de Ativações</div>
+                    <div class="stat-icon">✅</div>
+                </div>
+                <div class="stat-value">2</div>
+                <div class="stat-description">0 combos + 2 serviços<br>50% de reativações</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-label">Total de Cidades</div>
+                    <div class="stat-icon">📍</div>
+                </div>
+                <div class="stat-value">1</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-label">Total de Movimentações</div>
+                    <div class="stat-icon">🔄</div>
+                </div>
+                <div class="stat-value">2</div>
+                <div class="stat-description">1 reativações, 1 novas</div>
+            </div>
+        </div>
+
+        <div class="analysis-section">
+            <div class="section-title">Análise de Ativações e Reativações</div>
+            
+            <div class="chart-header">
+                <div style="font-size: 11px; color: #6b7280;">Dashboard:</div>
+                <select class="select-box">
+                    <option>Evolução Mensal</option>
+                </select>
+            </div>
+
+            <div class="chart-title">Reativações Detalhadas (Nov/2025)</div>
+
+            <div class="chart-bar bar-green">
+                <span>Reativações</span>
+                <span>60.00%</span>
+            </div>
+
+            <div class="chart-bar bar-purple">
+                <span>Ativações Novas</span>
+                <span>60.00%</span>
+            </div>
+
+            <div style="text-align: center; font-size: 11px; color: #6b7280; margin-top: 8px;">
+                Percentual Reativações
+            </div>
+        </div>
+
+        <div class="section-title">Ativações vs Desativações por Cidade</div>
+
+        <div class="summary-grid">
+            <div class="summary-item">
+                <div class="summary-label">Total Ativações</div>
+                <div class="summary-value value-cyan">2</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Desativações</div>
+                <div class="summary-value value-orange">0</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Saldo Líquido</div>
+                <div class="summary-value value-blue">R$ 2,00</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Taxa Média Retenção</div>
+                <div class="summary-value value-purple">100.00%</div>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+            <label style="font-size: 11px; color: #6b7280;">Filtrar por Performance:</label>
+            <select class="select-box" style="width: 100%; margin-top: 6px;">
+                <option>Selecione</option>
+            </select>
+        </div>
+
+        <div class="city-cards">
+            <div class="city-card">
+                <div class="city-header">
+                    <div>
+                        <span class="city-name">SINOP</span>
+                        <span class="city-state">MT</span>
+                    </div>
+                    <button class="add-button">+ Ações</button>
+                </div>
+
+                <div class="city-stats">
+                    <div class="city-stat">
+                        <div class="city-stat-label">Ativações</div>
+                        <div class="city-stat-value value-cyan">2</div>
+                    </div>
+                    <div class="city-stat">
+                        <div class="city-stat-label">Desativações</div>
+                        <div class="city-stat-value value-orange">0</div>
+                    </div>
+                    <div class="city-stat">
+                        <div class="city-stat-label">Saldo</div>
+                        <div class="city-stat-value" style="color: #10b981;">+2</div>
+                    </div>
+                </div>
+
+                <div class="city-footer">
+                    <div>
+                        <div class="retention-text">TAXA RETENÇÃO</div>
+                        <div class="retention-value">100.00%</div>
+                    </div>
+                    <span class="badge-excelente">Excelente</span>
+                </div>
+            </div>
+
+            <div class="city-card">
+                <div class="city-header">
+                    <div>
+                        <span class="city-name">SINOP</span>
+                        <span class="city-state">MT</span>
+                    </div>
+                    <button class="add-button">+ Ações</button>
+                </div>
+
+                <div class="city-stats">
+                    <div class="city-stat">
+                        <div class="city-stat-label">Ativações</div>
+                        <div class="city-stat-value value-cyan">2</div>
+                    </div>
+                    <div class="city-stat">
+                        <div class="city-stat-label">Desativações</div>
+                        <div class="city-stat-value value-orange">0</div>
+                    </div>
+                    <div class="city-stat">
+                        <div class="city-stat-label">Saldo</div>
+                        <div class="city-stat-value" style="color: #10b981;">+2</div>
+                    </div>
+                </div>
+
+                <div class="city-footer">
+                    <div>
+                        <div class="retention-text">TAXA RETENÇÃO</div>
+                        <div class="retention-value">100.00%</div>
+                    </div>
+                    <span class="badge-excelente">Excelente</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
